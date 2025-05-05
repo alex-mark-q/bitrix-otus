@@ -6,6 +6,7 @@ use CBitrixComponent;
 
 class COtusDoctorsComponent extends \CBitrixComponent implements Controllerable
 {
+    
     public function configureActions():array {
         return [];
     }
