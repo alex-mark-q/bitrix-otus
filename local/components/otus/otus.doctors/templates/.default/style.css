@@ -1,0 +1,148 @@
+.header-search-button {
+  display: block;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 30px;
+  border: 0;
+  text-indent: -9999px;
+  -webkit-transition: background-color 0.15s ease-in-out;
+  -moz-transition: background-color 0.15s ease-in-out;
+  transition: background-color 0.15s ease-in-out;
+  -webkit-border-radius: 0 3px 3px 0;
+  -moz-border-radius: 0 3px 3px 0;
+  border-radius: 0 3px 3px 0;
+  background-color: #fad61e;
+  background-position: -200px -50px; }
+  .header-search-button:hover {
+    background-color: #fbe261; }
+
+.header-search-result {
+  position: absolute;
+  z-index: 1000;
+  left: 0;
+  right: 0;
+  top: 50px;
+  background: #ffffff;
+  -moz-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+  padding: 10px 10px 20px 10px; }
+  .header-search-result__group {
+    position: relative;
+    font-size: 16px;
+    margin-bottom: 16px; }
+    .header-search-result__group:not(:first-child) {
+      margin-top: 16px; }
+    .header-search-result__group a {
+      cursor: default; }
+    .header-search-result__group .header-search-result__group-name {
+      color: #000000;
+      font-weight: bold; }
+    .header-search-result__group .header-search-result__show-all {
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: right;
+      cursor: pointer; }
+  .header-search-result__item {
+    padding: 2px 8px 5px 8px;
+    border-bottom: 1px solid #e3e3e3;
+    margin-top: 10px; }
+    .header-search-result__item.header-search-result__group-s {
+      padding: 0 0 0 15px;
+      margin-top: 8px;
+      border: none; }
+    .header-search-result__item > a {
+      display: table;
+      width: 100%; }
+    .header-search-result__item:last-child {
+      border: none; }
+  .header-search-result__image {
+    display: table-cell;
+    margin-right: 10px;
+    width: 12.5%;
+    height: 75px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center; }
+  .header-search-result__info {
+    display: table-cell;
+    width: 75%;
+    padding-left: 8px;
+    word-break: break-word;
+    white-space: normal; }
+    .header-search-result__info .product-name {
+      display: block;
+      height: 60px; }
+    .header-search-result__info .product-articul {
+      font-size: 12px;
+      color: #b5b5b5; }
+    .header-search-result__info .product-status {
+      display: block;
+      float: right;
+      text-align: right;
+      margin-right: 15px;
+      font-size: 12px; }
+  .header-search-result__price {
+    display: table-cell;
+    width: 12.5%; }
+    .header-search-result__price .product-price {
+      display: block;
+      float: none;
+      width: 100%;
+      font: bold 16px/22px "Geometria", sans-serif;
+      color: #000;
+      text-align: right; }
+    .header-search-result__price .product-price-bonus {
+      display: block;
+      float: none;
+      font-size: 10px;
+      color: #000;
+      text-align: right; }
+
+.header-mobile-search {
+  width: 0;
+  height: 0; }
+
+.header-mobile-search-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: block;
+  width: 57px;
+  height: 50px;
+  background: #fad61e none no-repeat;
+  border-left: 1px solid #7bbfe8; }
+  .header-mobile-search-button:before {
+    content: "";
+    position: absolute;
+    left: 20px;
+    top: 16px;
+    width: 16px;
+    height: 16px;
+    background-position: -210px -57px; }
+
+.header-mobile-search-text {
+  position: absolute;
+  right: 57px;
+  left: 0;
+  top: 0;
+  height: 50px; }
+  .header-mobile-search-text input {
+    float: left;
+    width: 100%;
+    height: 50px;
+    border: 0;
+    background: #60c1f3;
+    font-size: 14px;
+    line-height: 20px;
+    color: #ffffff;
+    padding: 14px 0 16px 10px; }
+    .header-mobile-search-text input::placeholder {
+      color: #ffffff !important; }
+
+/*# sourceMappingURL=style.css.map */
