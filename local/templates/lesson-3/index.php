@@ -2,7 +2,7 @@
     require ($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.php");
     require ($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
     /** @global $APPLICATION */
-    $APPLICATION->SetTitle('Врачи');
+    $APPLICATION->SetTitle('Lesson-3');
     $templatePath = \Bitrix\Main\Application::getDocumentRoot() . __DIR__;
     // echo $templatePath . PHP_EOL;
     // echo DOMAIN_PORTAL;
@@ -17,7 +17,7 @@
     $httpClient->setTimeout(30); // Таймаут в секундах
     $httpClient->setStreamTimeout(60); // Таймаут потока в секундах
     $httpClient->setHeader('Content-Type', 'application/json', true); // Устанавливаем заголовок
-    $httpClient->setAuthorization(LOGIN_PORTAL, PASSWORD_PORTAL);
+    // $httpClient->setAuthorization(LOGIN_PORTAL, PASSWORD_PORTAL);
 
     $response = $httpClient->get('https://' . DOMAIN_PORTAL . '/local/templates/lesson-3/api/doctors/getDoctors.php');
 
@@ -54,7 +54,7 @@
         }
 
         // pr($setDoctors);
-        // header("Location: " . $_SERVER['PHP_SELF']);
+        header("Location: " . $_SERVER['PHP_SELF']);
     }
 
     if(isset($_GET['idProcedureName']) && isset($_GET['idDoctor'])) {
