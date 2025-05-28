@@ -17,12 +17,15 @@
     $httpClient->setTimeout(30); // Таймаут в секундах
     $httpClient->setStreamTimeout(60); // Таймаут потока в секундах
     $httpClient->setHeader('Content-Type', 'application/json', true); // Устанавливаем заголовок
-    // $httpClient->setAuthorization(LOGIN_PORTAL, PASSWORD_PORTAL);
+    $httpClient->setAuthorization(LOGIN_PORTAL, PASSWORD_PORTAL);
 
     $response = $httpClient->get('https://' . DOMAIN_PORTAL . '/local/templates/lesson-3/api/doctors/getDoctors.php');
 
     if ($httpClient->getStatus() == 200) {
         $dataDoctors = json_decode($httpClient->getResult(), true);
+        // echo "<pre>";
+        // print_r($dataDoctors);
+        // echo "</pre>";
     } else {
         $dataDoctors = json_encode([
             'error' => true,
@@ -34,14 +37,13 @@
 
     // echo $_SERVER["DOCUMENT_ROOT"] . "/local/templates/lesson-3/api/doctors/setDoctors.php";
     
+    if(isset($_POST['doctorName']) && isset($_POST['doctorSpecialty'])) {
 
-    if(isset($_GET['doctorName']) && isset($_GET['doctorSpecialty'])) {
+        $nameDoctor = urlencode(trim($_POST['doctorName'] ?? ''));
+        $doctorSpecialty = urlencode(trim($_POST['doctorSpecialty'] ?? ''));
 
-        $doctorSpecialty = trim($_GET['doctorSpecialty'] ?? '');
-        $nameDoctor = trim($_GET['doctorName'] ?? '');
-
-        echo $nameDoctor . PHP_EOL;
-        echo $doctorSpecialty . PHP_EOL;
+        // echo $nameDoctor . PHP_EOL;
+        // echo $doctorSpecialty . PHP_EOL;
 
         $response = $httpClient->get('https://' . DOMAIN_PORTAL . "/local/templates/lesson-3/api/doctors/setDoctors.php?name={$nameDoctor}&specialty={$doctorSpecialty}");
         if ($httpClient->getStatus() == 200) {
@@ -57,9 +59,11 @@
         header("Location: " . $_SERVER['PHP_SELF']);
     }
 
-    if(isset($_GET['idProcedureName']) && isset($_GET['idDoctor'])) {
-        $idProcedure = trim($_GET['idProcedureName'] ?? '');
-        $idDoctor = trim($_GET['idDoctor'] ?? '');
+    // echo $_POST['idProcedureName'] . PHP_EOL;
+    // echo $_POST['idDoctor'] . PHP_EOL;
+    if(isset($_POST['idProcedureName']) && isset($_POST['idDoctor'])) {
+        $idProcedure = trim($_POST['idProcedureName'] ?? '');
+        $idDoctor = trim($_POST['idDoctor'] ?? '');
         $response = $httpClient->get('https://' . DOMAIN_PORTAL . "/local/templates/lesson-3/api/doctors/setSpecialization.php?idProcedure={$idProcedure}&idDoctor={$idDoctor}");
         
         if ($httpClient->getStatus() == 200) {
@@ -94,28 +98,28 @@
         <!-- Форма добавления врача -->
         <div class="form-section">
             <h2>Добавить врача</h2>
-            <form id="addDoctorForm" action="index.php" method="get">
+            <form id="addDoctorForm" action="index.php" method="POST">
                 <div class="form-group">
                     <label for="doctorName">ФИО врача:</label>
                     <input type="text" id="doctorName" name="doctorName" required>
                 </div>
                 <div class="form-group">
                     <label for="doctorSpecialty">Специальность:</label>
-                    <input type="text" id="doctorSpecialty" name="doctorSpecialty" required>
+                    <input type="text" id="doctorSpecialty" name="doctorSpecialty">
                 </div>
                 <button type="text" class="btn">Добавить врача</button>
             </form>
         </div>
-        <!-- <?php if (!empty($_GET['message'])): ?>
-            <div class="alert <?= strpos($_GET['message'], 'Ошибка') === false ? 'alert-success' : 'alert-error' ?>">
-                <?= htmlspecialchars(urldecode($_GET['message'])) ?>
+        <!-- <?php if (!empty($_POST['message'])): ?>
+            <div class="alert <?= strpos($_POST['message'], 'Ошибка') === false ? 'alert-success' : 'alert-error' ?>">
+                <?= htmlspecialchars(urldecode($_POST['message'])) ?>
             </div>
         <?php endif; ?>  -->
         
         <!-- Форма добавления процедуры -->
         <div class="form-section">
             <h2>Добавить процедуру</h2>
-            <form id="addProcedureForm" action="index.php" method="get">
+            <form id="addProcedureForm" action="index.php" method="POST">
                 <div class="form-group">
                     <label for="procedureName">Название процедуры:</label>
 
@@ -155,11 +159,12 @@
             let html = '';
             
             for (const [id, doctor] of Object.entries(doctorsData.doctors)) {
+
                 html += `
                     <div class="doctor-card" onclick="toggleProcedures(this)">
                         <div class="doctor-header">
                             <div class="doctor-name">${doctor.doctor}</div>
-                            <div class="doctor-specialization">${doctor.specialization}</div>
+                            <div class="doctor-specialization">${doctor.specialization && doctor.specialization}</div>
                         </div>
                         <div class="doctor-procedures">
                             <ul class="procedure-list">
@@ -206,7 +211,7 @@
         renderSelectOptions(
             doctorsData.doctors, 
             'procedureDoctor', 
-            (doctor) => `${doctor.doctor} (${doctor.specialization})`
+            (doctor) => `${doctor.doctor} (${doctor.specialization && doctor.specialization})`
         );
         
         document.addEventListener('DOMContentLoaded', function() {

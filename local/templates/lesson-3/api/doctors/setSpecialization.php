@@ -11,11 +11,11 @@
 
             $element_id = $_GET['idDoctor'];
             $iblock_id = 16;
-            $linkedElements = [$_GET['idProcedure']]; // Массив ID привязанных элементов
+            $linkedElements = [$_GET['idProcedure']]; // Массив ID привязанного элемента
             $res = CIBlockElement::SetPropertyValuesEx(
                 $element_id , // ID элемента, значение свойства которого мы изменяем
                 $iblock_id ,   // ID инфоблока
-                ["PROTSEDURA_M" => $linkedElements] // Массив ID привязанных элементов
+                ["PROTSEDURA_M" => $linkedElements] // Массив ID привязанного элемента
             );
     
         } catch(Exception $e) {
