@@ -4,30 +4,97 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle('Врачи');
 $APPLICATION->SetAdditionalCSS('/doctors/style.css');
 
+use Bitrix\Main\UI\PageNavigation;
+use Bitrix\Main\Grid\Options as GridOptions;
+use Bitrix\Main\UI\Filter\Options as FilterOptions;
+use Otus\Models\HospitalTable;
 
-$docId = 74; // идентификатор доктора из инфоблока Доктора
-$doctors = \Bitrix\Iblock\Elements\ElementDoctorsTable::getList([ // получение списка процедур у врачей
-    'select' => [
-        'ID', 
-        'NAME', 
-        'PROC_IDS_MULTI.ELEMENT.NAME',
-        'PROC_IDS_MULTI.ELEMENT.DESCRIPTION' // PROC_IDS_MULTI - множественное поле Процедуры у элемента инфоблока Доктора 
-    ], 
-    'filter' => [
-        'ID' => $docId,
-        'ACTIVE' => 'Y',
+// $hospitals = HospitalTable::getList([
+//     // 'filter' => ['ID' => $hospitalIds],
+//     'select' => [
+//     ],
+//     'order' => $sort['sort'],
+// ]);
+
+$arResults['FILTER_ID'] = 'HOSPITAL_GRID';
+$gridOptions = new GridOptions($arResults['FILTER_ID']);
+$navParams = $gridOptions->getNavParams();
+
+$nav = new PageNavigation($arResults['FILTER_ID']);
+$nav->allowAllRecords(true)
+    ->setPageSize($navParams['nPageSize'])
+    ->initFromUri();
+
+$filterOption = new FilterOptions($arResults['FILTER_ID']);
+$filterData = $filterOption->getFilter([]);
+// $filter = $this->prepareFilter($filterData);
+// pr($filterData);
+
+$sort = $gridOptions->getSorting([
+    'sort' => [
+        'ID' => 'DESC',
     ],
-])
-->fetchCollection(); 
+    'vars' => [
+        'by' => 'by',
+        'order' => 'order',
+    ],
+]);
 
-foreach ($doctors as $doctor) {
-    foreach($doctor->getProcIdsMulti()->getAll() as $prItem) {
-        // получаем значение у процедуры 
-        if($prItem->getElement()->getDescription()!== null){
-            pr($prItem->getId().' - '.$prItem->getElement()->getName().' - '.$prItem->getElement()->getDescription()->getValue());
-        }
-    }
+$hospitalIdsQuery = HospitalTable::query()
+    ->setSelect([])
+    ->setFilter([])
+    ->setOrder([])
+;
+
+// pr($hospitalIdsQuery->exec()->fetchAll());
+
+$hospitals = HospitalTable::getList([
+    'filter' => [],
+    'select' => [
+        'id',
+        'hospital_name',
+        'city',
+        'doctor_id'
+    ],
+    'order' => $sort['sort'],
+]);
+
+// pr($hospitals->fetch());
+
+while($hospital = $hospitals->fetch()) {
+    // pr($hospital);
 }
+
+$countQuery = HospitalTable::query()
+    ->setSelect(['ID'])
+    ->setFilter($filterData)
+;
+pr($nav->setRecordCount($countQuery->queryCountTotal()));
+// pr($countQuery);
+
+// $docId = 74; // идентификатор доктора из инфоблока Доктора
+// $doctors = \Bitrix\Iblock\Elements\ElementDoctorsTable::getList([ // получение списка процедур у врачей
+//     'select' => [
+//         'ID', 
+//         'NAME', 
+//         'PROC_IDS_MULTI.ELEMENT.NAME',
+//         'PROC_IDS_MULTI.ELEMENT.DESCRIPTION' // PROC_IDS_MULTI - множественное поле Процедуры у элемента инфоблока Доктора 
+//     ], 
+//     'filter' => [
+//         'ID' => $docId,
+//         'ACTIVE' => 'Y',
+//     ],
+// ])
+// ->fetchCollection(); 
+
+// foreach ($doctors as $doctor) {
+//     foreach($doctor->getProcIdsMulti()->getAll() as $prItem) {
+//         // получаем значение у процедуры 
+//         if($prItem->getElement()->getDescription()!== null){
+//             pr($prItem->getId().' - '.$prItem->getElement()->getName().' - '.$prItem->getElement()->getDescription()->getValue());
+//         }
+//     }
+// }
 
 /*// получение списка процедур у врачей с использованием метода query()
 $doctors = \Bitrix\Iblock\Elements\ElementDoctorsTable::query() 

@@ -6,7 +6,7 @@ $APPLICATION->IncludeComponent(
 	"otus:otus.currencies", 
 	".default", 
 	array(
-		"CURRENCY" => "EUR",
+		"CURRENCY" => "USD",
 		"NUM_PAGE" => "1",
 		"COMPONENT_TEMPLATE" => ".default",
 		"SHOW_CHECKBOXES" => "Y"

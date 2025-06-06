@@ -1,5 +1,5 @@
 <?php
-namespace Otus\Models;
+namespace Otus\Customtab\Orm;
 
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\ORM\Data\DataManager;
@@ -11,8 +11,6 @@ use Bitrix\Main\ORM\Fields\Relations\OneToMany;
 use Bitrix\Main\ORM\Fields\Relations\ManyToMany;
 use Bitrix\Main\Entity\Query\Join;
 
-use Otus\Models\ClientsTable as Clients;
-use Otus\Models\DoctorsTable as Doctors;
 /**
  * Class HospitalTable
  * 
@@ -47,13 +45,13 @@ class HospitalTable extends DataManager
 	public static function getMap()
 	{
 		return [
-			'id' => (new IntegerField('id',
+			'ID' => (new IntegerField('id',
 					[]
 				))->configureTitle(Loc::getMessage('HOSPITAL_ENTITY_ID_FIELD'))
 						->configurePrimary(true)
 						->configureAutocomplete(true)
 			,
-			'hospital_name' => (new StringField('hospital_name',
+			'HOSPITAL_NAME' => (new StringField('hospital_name',
 					[
 						'validation' => function()
 						{
@@ -64,7 +62,7 @@ class HospitalTable extends DataManager
 					]
 				))->configureTitle(Loc::getMessage('HOSPITAL_ENTITY_HOSPITAL_NAME_FIELD'))
 			,
-			'city' => (new StringField('city',
+			'CITY' => (new StringField('city',
 					[
 						'validation' => function()
 						{
@@ -75,21 +73,10 @@ class HospitalTable extends DataManager
 					]
 				))->configureTitle(Loc::getMessage('HOSPITAL_ENTITY_CITY_FIELD'))
 			,
-			'doctor_id' => (new IntegerField('doctor_id',
+			'DOCTOR_ID' => (new IntegerField('doctor_id',
 					[]
 				))->configureTitle(Loc::getMessage('HOSPITAL_ENTITY_DOCTOR_ID_FIELD'))
 			,
-			// К одной больнице может быть несколько привязанных докторов
-			// (new OneToMany(
-			// 	'otus_doctors_clients', 
-			// 	Clients::class, 'doctor_id'
-			// ))->configureJoinType('inner'),
-
-			// Обратная связь ManyToMany с докторами
-            // 'doctors' => (new ManyToMany('doctors', Doctors::class))
-            //     ->configureTableName('otus_about_doctors')
-            //     ->configureLocalPrimary('id', 'doctor_id') // Из otus_doctors_hospital
-            //     ->configureRemotePrimary('id', 'doctor_id') // Из otus_doctors_clients
 		];
 	}
 }

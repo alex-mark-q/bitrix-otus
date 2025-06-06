@@ -53,6 +53,16 @@ class COtusCurrenciesComponent extends CBitrixComponent implements Controllerabl
 
         return $list;
     }
+
+    private function prepareCurrency():array {
+        $listCurrency = $this->getList($page, $this->arResult['NUM_PAGE']); // получаем записи таблицы
+        // pr($listCurrency);
+        $filteredArray = array_filter($listCurrency, function($item) {
+            return $item['data']['CURRENCY'] === $this->arParams["CURRENCY"];
+        });
+        return $filteredArray;
+    }
+
     public function executeComponent() {
         try {
 
@@ -74,7 +84,7 @@ class COtusCurrenciesComponent extends CBitrixComponent implements Controllerabl
             }
 
             $this->arResult['COLUMNS'] = $this->getColumn(); // получаем названия полей таблицы
-            $this->arResult['LISTS'] = $this->getList($page, $this->arResult['NUM_PAGE']); // получаем записи таблицы
+            $this->arResult['LISTS'] = $this->prepareCurrency();
             $this->arResult['COUNT'] =  Currency::getCount(); // количество записей
 
             $this->includeComponentTemplate($this->page);
