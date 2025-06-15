@@ -99,7 +99,7 @@ class HospitalGrid extends \CBitrixComponent implements Controllerable
         $nav->setRecordCount($countQuery->queryCountTotal());
 
         $hospitalIds = array_column($hospitalIdsQuery->exec()->fetchAll(), 'ID');
-        pr($hospitalIds);
+        // pr($hospitalIds);
 
         $resultsHospital = [];
         $hospitalsData = HospitalTable::getList([
