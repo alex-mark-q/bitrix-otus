@@ -5,6 +5,8 @@ use Bitrix\Main\Data\Cache;
 
 class OnlineRecord
 {
+    const DEFAULT_SELECT_VALUE = '(не установлено)';
+
     public static function GetUserTypeDescription()
     {
         return array(
@@ -51,14 +53,18 @@ class OnlineRecord
         }
 
         // $displayValue = trim($arVals[$arValue['VALUE']] ?? $arValue['VALUE']);
+        
         $displayValue = $doctorData['procedure'][$arValue['VALUE']];
+        // pr($displayValue);
+        $excludeValue = ($displayValue !== self::DEFAULT_SELECT_VALUE) ? $displayValue : null;
+        //pr($excludeValue);
         
         // Добавляем data-атрибуты для удобства
         $strResult = '<a id="' . $linkid . '" class="procedure-link" 
                     data-procedure-id="' . htmlspecialcharsbx($procedureId) . '"
                     data-element-id="' . htmlspecialcharsbx($elementId) . '"
                     ' . ($arSettings["_BLANK"] == 'Y' ? 'target="_blank"' : '') . ' 
-                    href="javascript:void(0);">' . $displayValue . '</a>';
+                    href="javascript:void(0);">' . $excludeValue . '</a>';
         
         $strResult .= '
         <div id="popup-' . $linkid . '" style="display:none; background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
@@ -284,8 +290,8 @@ class OnlineRecord
     public static function GetPropertyFieldHtml($arProperty, $arValue, $strHTMLControlName)
     {
         // pr($arProperty);
-        echo "arValue";
-        pr($arValue);
+        // echo "arValue";
+        // pr($arValue);
         // pr($strHTMLControlName);
         $strResult = '';
 
@@ -352,7 +358,6 @@ class OnlineRecord
     }
 
     public static function prependDataDoctors() {
-        $default_select_value = '(не установлено)';
 
         $cacheTime = 30*60; // время кеширования, указывается в секундах
         $cacheId = 'doctors_data_' . $_REQUEST['CACHE_ID']; // формируем идентификатор кеша в зависимости от параметров
@@ -400,7 +405,7 @@ class OnlineRecord
             ])
             ->fetchCollection(); 
 
-            $arr_doctors['procedure'][0] = $default_select_value;
+            $arr_doctors['procedure'][0] = self::DEFAULT_SELECT_VALUE;
             foreach ($procedures as $procedure) {
                 $arr_doctors["procedure"][$procedure->getId()] = $procedure->getName();
             }

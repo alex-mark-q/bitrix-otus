@@ -36,3 +36,7 @@ $eventManager->AddEventHandler(
         'GetUserTypeDescription'
     ]
 );
+
+\Bitrix\Main\UI\Extension::load([
+    'homework.begin_date_button',
+]);

@@ -3,8 +3,9 @@
 return [
     'controllers' => [
         'value' => [
-            'defaultNamespace' => '\\crmotustab\\Controller',
+            'defaultNamespace' => 'Otus\\Customtab\\Controller',
         ],
         'readonly' => true,
     ]
 ];
+
