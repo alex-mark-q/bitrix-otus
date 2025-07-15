@@ -23,8 +23,6 @@ class CBPSearchByInnActivity extends BaseActivity
 
         $this->arProperties = [
             'Inn' => '',
-
-            // return
             'Text' => null,
         ];
 
@@ -66,17 +64,13 @@ class CBPSearchByInnActivity extends BaseActivity
         $companyAddress = 'отсутствует';
         if(!empty($response['suggestions'])) { // если копания найдена
             // по ИНН возвращается массив в котором может быть несколько элементов (компаний)
-            $companyName = $response['suggestions'][0]['value']; // получаем имя компании из первого элемента
-            $companyPhone = $response['suggestions'][0]['phones'];
-            $companyAddress = $response['suggestions'][0]['data']['address']['value'];
-            // file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/logs/task_1.log', print_r($companyName, true) . PHP_EOL, FILE_APPEND);
+            $companyName = $response['suggestions'][0]['data']['name']['short_with_opf']; 
+            $companyPhone = !empty($response['suggestions'][0]['data']['phones'][0]['value']) 
+                ? $response['suggestions'][0]['data']['phones'][0]['value'] 
+                : '';
+            $companyAddress = $response['suggestions'][0]['data']['address']['value']; // "г Санкт-Петербург, Лахтинский пр-кт, д 2 к 3 стр 1"
+            // file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/logs/task_1.log', print_r($response['suggestions'][0], true) . PHP_EOL, FILE_APPEND);
         }  
-
-        // в рабочем активити необходимо будет создать отдельный метод который будет получать результат ответа сервиса Dadata, 
-        // обходить циклом результат и сохранять в массив все полученные организации
-
-        $this->preparedProperties['Text'] = $companyName;
-        $this->log($this->preparedProperties['Text']);
         
         $rootActivity = $this->GetRootActivity(); // получаем объект активити
         // сохранение полученных результатов работы активити в переменную бизнес процесса
@@ -101,11 +95,31 @@ class CBPSearchByInnActivity extends BaseActivity
         $arNewCompany['FM']['EMAIL'] = array(
             "n0" => array(
                 "VALUE_TYPE" => "WORK",
-                "VALUE" => $companyAddress,
+                "VALUE" => "test@test.ru",
             )
         );
-        $company = new CCrmCompany(false);
-        $companyID = $company->Add($arNewCompany);
+        try {
+            $company = new CCrmCompany(false);
+            $companyID = $company->Add($arNewCompany, $bUpdateSearch = true, $arOptions = [
+                /**
+                 * ID пользователя, от лица которого выполняется действие
+                 * в том числе проверка прав
+                 * @var integer
+                 */
+                'CURRENT_USER' => \CCrmSecurityHelper::GetCurrentUserID(),
+
+                /**
+                 * Устанавливайте флаг, только если сущность проходит
+                 * процедуру восстановления. В случае если флаг есть
+                 * можно заполнять технические поля DATE_CREATE, DATE_MODIFY
+                 * @var boolean
+                 */
+                // 'IS_RESTORATION' => true,
+            ]);
+        }catch (\Exception $exception) {
+            file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/logs/crm_error.log', $exception->getMessage() . PHP_EOL, FILE_APPEND);
+            throw $exception;
+        }
 
         return $errors;
     }
