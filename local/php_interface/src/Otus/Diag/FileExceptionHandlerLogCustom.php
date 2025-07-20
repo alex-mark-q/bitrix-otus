@@ -4,12 +4,6 @@ use Bitrix\Main\Diag\FileExceptionHandlerLog;
 use Bitrix\Main\Diag\ExceptionHandlerFormatter;
 
 class FileExceptionHandlerLogCustom extends FileExceptionHandlerLog {
-    // public static function print() {
-    //     print 'Hello world';
-    // }
-    // public static function initialize () {
-    //     return;
-    // }
     public function write($exception, $logType)
 	{
         var_dump($exception);
