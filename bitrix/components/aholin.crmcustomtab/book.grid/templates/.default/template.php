@@ -28,8 +28,6 @@ $APPLICATION->IncludeComponent(
 ?>
 
 <?php
-// pr($arResult['GRID_LIST']);
-// pr($arResult['NAV']);
 $APPLICATION->IncludeComponent(
     'bitrix:main.ui.grid',
     '',

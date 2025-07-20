@@ -59,7 +59,7 @@ $APPLICATION->IncludeComponent(
     [
         'PLAIN_VIEW' => false,
         'USE_PADDING' => true,
-        'POPUP_COMPONENT_NAME' => 'otus.customtab:book.grid',
+        'POPUP_COMPONENT_NAME' => 'aholin.crmcustomtab:book.grid',
         'POPUP_COMPONENT_TEMPLATE_NAME' => $componentData['template'] ?? '',
         'POPUP_COMPONENT_PARAMS' => $componentParams,
     ],

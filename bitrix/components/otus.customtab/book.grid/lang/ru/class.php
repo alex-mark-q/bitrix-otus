@@ -1,6 +1,0 @@
-<?php
-$MESS['HOSPITAL_GRID_TITLE_LABEL'] = 'Название книги';
-$MESS['HOSPITAL_GRID_PUBLISHING_YEAR_LABEL'] = 'Год издания';
-$MESS['HOSPITAL_GRID_PAGES_LABEL'] = 'Количество страниц';
-$MESS['HOSPITAL_GRID_AUTHORS_LABEL'] = 'Авторы';
-$MESS['HOSPITAL_GRID_PUBLISHING_DATE_LABEL'] = 'Дата публикации';
